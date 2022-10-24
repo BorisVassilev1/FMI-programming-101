@@ -1,0 +1,3 @@
+[submodule "pusheen_contest/nanosvg"]
+	path = pusheen_contest/nanosvg
+	url = https://github.com/memononen/nanosvg
