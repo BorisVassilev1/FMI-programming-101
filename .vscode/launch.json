@@ -33,7 +33,12 @@
         "name": "F5 Anything: Custom Command",
         "type": "f5anything",
         "request": "launch",
-        "command": "g++ ${file} -std=c++2a -g && ./a.out"
+        "linux": {
+            "command": "g++ ${file} -std=c++2a -g && ./a.out"
+        },
+        "windows": {
+            "command": "g++ ${file} -std=c++2a -g && a.exe"
+        }
     }
     ]
 }
