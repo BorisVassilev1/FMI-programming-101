@@ -71,6 +71,7 @@
         "variant": "cpp",
         "float.h": "c",
         "stdio.h": "c",
-        "nanosvg.h": "c"
+        "nanosvg.h": "c",
+        "cassert": "cpp"
     }
 }

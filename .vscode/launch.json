@@ -4,41 +4,52 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    {
-        "name": "(gdb) Launch",
-        "type": "cppdbg",
-        "request": "launch",
-        "preLaunchTask": "compile_cpp_file",
-        "program": "${workspaceFolder}/a.out",
-        "args": [],
-        "stopAtEntry": false,
-        "cwd": "${fileDirname}",
-        "environment": [],
-        "externalConsole": false,
-        "MIMode": "gdb",
-        "setupCommands": [
-            {
-                "description": "Enable pretty-printing for gdb",
-                "text": "-enable-pretty-printing",
-                "ignoreFailures": true
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "compile_cpp_file",
+            "windows": {
+                "program": "${workspaceFolder}/a.exe",
             },
-            {
-                "description":  "Set Disassembly Flavor to Intel",
-                "text": "-gdb-set disassembly-flavor intel",
-                "ignoreFailures": true
-            }
-        ]
-    },
-    {
-        "name": "F5 Anything: Custom Command",
-        "type": "f5anything",
-        "request": "launch",
-        "linux": {
-            "command": "g++ ${file} -std=c++2a -g && ./a.out"
+            "linux": {
+                "program": "${workspaceFolder}/a.out",
+            },
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
         },
-        "windows": {
-            "command": "g++ ${file} -std=c++2a -g && a.exe"
+        {
+            "name": "F5 Anything: Custom Command",
+            "type": "f5anything",
+            "request": "launch",
+            "linux": {
+                "name": "F5 Anything: Custom Command",
+                "type": "f5anything",
+                "request": "launch",
+                "command": "g++ ${file} -std=c++2a -g && ./a.out"
+            },
+            "windows": {
+                "name": "F5 Anything: Custom Command",
+                "type": "f5anything",
+                "request": "launch",
+                "command": "g++ ${file} -std=c++2a -g && a.exe"
+            }
         }
-    }
     ]
 }

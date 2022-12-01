@@ -6,13 +6,13 @@ using std::cout;
 using std::endl;
 using uint = uint32_t;
 
-const int maxN = 1e6;
+const int maxN = 1e7 + 10;
 
 int src[maxN];
 int dest[maxN];
 
 void print(const int *arr, uint len) {
-	for (int i = 0; i < len; ++i) {
+	for (uint i = 0; i < len; ++i) {
 		cout << arr[i] << " ";
 	}
 	cout << endl;
@@ -40,10 +40,10 @@ void mergeBottomUp(const int *src, int *dest, const uint begin, const uint runWi
 	}
 }
 
-void mergeSort(int *src, int *dest, const uint len) {
+int *mergeSort(int *src, int *dest, const uint len) {
 	uint runWidth = 1;
-    uint i = 0;
-    int *front = src, *back = dest;
+	uint i		  = 0;
+	int *front = src, *back = dest;
 	for (; runWidth < len; runWidth <<= 1, ++i) {
 		const uint step = 2 * runWidth;
 		for (uint i = 0; i < len; i += step) {
@@ -51,20 +51,18 @@ void mergeSort(int *src, int *dest, const uint len) {
 		}
 		std::swap(front, back);
 	}
-	if (i % 2 == 0) std::swap(front, back);
-
-    if(back != dest) memcpy(dest, back, len * sizeof(int));
+	return i%2 ? dest : src;
 }
 
 int main() {
-	uint len = 10;
-	for (uint i = 0; i < len; ++i) {
-		src[i] = len - i;
+	uint n;
+	cin >> n;
+	for (uint i = 0; i < n; ++i) {
+		cin >> src[i];
 	}
-	print(src, len);
 
-	mergeSort(src, dest, len);
+	int *res = mergeSort(src, dest, n);
 
-    print(dest, len);
+	print(res, n);
 	return 0;
 }

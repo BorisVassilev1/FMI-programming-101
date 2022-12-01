@@ -10,3 +10,5 @@ pusheen_contest/build/*
 
 *.out
 *.exe
+
+test.txt
