@@ -42,13 +42,13 @@
                 "name": "F5 Anything: Custom Command",
                 "type": "f5anything",
                 "request": "launch",
-                "command": "g++ ${file} -std=c++2a -g && ./a.out"
+                "command": "g++ ${file} -std=c++2a -g -Wall -Wextra --pedantic-errors && ./a.out"
             },
             "windows": {
                 "name": "F5 Anything: Custom Command",
                 "type": "f5anything",
                 "request": "launch",
-                "command": "g++ ${file} -std=c++2a -g && a.exe"
+                "command": "g++ ${file} -std=c++2a -g -Wall -Wextra --pedantic-errors && a.exe"
             }
         }
     ]
