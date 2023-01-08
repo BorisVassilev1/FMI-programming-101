@@ -1,105 +1,95 @@
 #include <iostream>
 #include <algorithm>
-#include <stdexcept>
 
-// клас за Карта Уно
-class UnoCard {
-	uint8_t color;
-	uint8_t value;
-	bool	valid = false;
+#ifdef _WIN32
+	using uint = unsigned int;
+#endif
+using uchar = unsigned char;
 
-	void errorMessage(unsigned int n) { throw std::runtime_error("[UNO]: INVALID CARD " + std::to_string(n) + " !\n"); }
+// функции за извличане на информация за карта
+uchar getColor(const uint card) { return (double)card * ( 1./ 100000); }
+uchar getValue(const uint card) { return (int)((double)card * (1./ 10)) % 100; }
 
-   public:
-	UnoCard() : color(255), value(255){};
-	UnoCard(unsigned int n) {
-		unsigned int n_cpy = n;
+// валидиране на карта
+bool validate(const uint card) {
+	const uchar color = getColor(card);
+	const uchar value = getValue(card);
+	
+	// валидация на картата
+	if (color < 1 || color > 5) { return false; }
+	if (value > 14) { return false; }
+	if (value <= 12 && color == 5) { return false; }
+	if (value >= 13 && color != 5) { return false; }
+	return true;
+}
 
-		// извличане на стойности
-		n /= 10;
-		value = n % 100;
-		n /= 10000;
-		color = n;
+// функция за сравнение
+bool compare(const uint card1, const uint card2) {
+	const uchar val1 = getValue(card1);
+	const uchar val2 = getValue(card2);
+	if (val1 != val2) return val1 < val2;		  // възходяща наредба по стойност
+	return getColor(card1) > getColor(card2);	  // и низходяща по цвят
+}
 
-		// валидация на картата
-		if (color < 1 || color > 5) {
-			errorMessage(n_cpy);
-			return;
-		}
-		if (value > 14) {
-			errorMessage(n_cpy);
-			return;
-		}
-		if (value <= 12 && color == 5) {
-			errorMessage(n_cpy);
-			return;
-		}
-		if (value >= 13 && color != 5) {
-			errorMessage(n_cpy);
-			return;
-		}
-		valid = true;
-	}
-
-	// проверка за валидност на картата
-	bool good() { return this->valid; }
-
-	// оператор за сравнение
-	bool operator<(UnoCard &other) {
-		if (value != other.value) return value < other.value;	  // възходяща наредба по стойност
-		return color > other.color;								  // и низходяща по цвят
-	}
-
-	void print() { std::cout << *this; }
-
-	// оператор за печатане
-	friend std::ostream &operator<<(std::ostream &out, UnoCard &card) {
-		if (!card.good()) {
-			out << "*INVALID CARD*";
-			return out;
-		}
-		out << '(';
-		switch (card.color) {
-			case 1: out << "YELLOW "; break;
-			case 2: out << "GREEN "; break;
-			case 3: out << "BLUE "; break;
-			case 4: out << "RED "; break;
+// функция за печатане на карта
+void printCard(const uint card) {
+		const uchar color = getColor(card);
+		const uchar value = getValue(card);
+		
+		std::cout << '(';
+		switch (color) {
+			case 1: std::cout << "YELLOW "; break;
+			case 2: std::cout << "GREEN "; break;
+			case 3: std::cout << "BLUE "; break;
+			case 4: std::cout << "RED "; break;
 			case 5: break;
 		}
-		if (card.value < 10) {
-			out << (uint)card.value;
-		} else switch (card.value) {
-				case 10: out << "+2"; break;
-				case 11: out << "REVERSE"; break;
-				case 12: out << "STOP"; break;
-				case 13: out << "CHANGE COLOR"; break;
-				case 14: out << "+4"; break;
+		if (value < 10) {
+			std::cout << (uint)value;
+		} else switch (value) {
+				case 10: std::cout << "+2"; break;
+				case 11: std::cout << "REVERSE"; break;
+				case 12: std::cout << "STOP"; break;
+				case 13: std::cout << "CHANGE COLOR"; break;
+				case 14: std::cout << "+4"; break;
 			}
-		return out << ')';
+		std::cout << ')';
+}
+
+// функция, която сортира картите в масив
+void sortCards(uint *cards, size_t size) {
+	for(uint i = 0; i < size; ++ i) {
+		for(uint j = i; j < size; ++ j) {
+			if(!compare(cards[i], cards[j])) {
+				std::swap(cards[i], cards[j]);
+			}
+		}
 	}
-};
+}
 
 int main() {
-	int n;
+	// брой карти
+	uint n;
 	std::cin >> n;
-	UnoCard *cards = new UnoCard[n];
-	// UnoCard cards[10000];
-
-	for (int i = 0; i < n; ++i) {
-		unsigned int card;
-		std::cin >> card;
-		try {
-			cards[i] = UnoCard(card);
-		} catch (const std::exception &e) {
-			std::cerr << e.what();
+	// масив за картите
+	uint *cards = new uint[n];
+	
+	// въвеждаме картите
+	for(uint i = 0; i < n; ++ i) {
+		std::cin >> cards[i];
+		if(!validate(cards[i])) { // и проверяваме за валидност
+			std::cerr << "INVALID CARD: " << cards[i] << "\n";
 			return 0;
 		}
 	}
 
-	std::sort(cards, cards + n);
+	// сортираме масива
+	sortCards(cards, n);
 
-	for (int i = 0; i < n; ++i) {
-		std::cout << cards[i] << ' ';
+	// и печатаме картите
+	for(uint i = 0; i < n; ++ i) {
+		printCard(cards[i]);
+		std::cout << ' ';
 	}
 	std::cout << std::endl;
 
