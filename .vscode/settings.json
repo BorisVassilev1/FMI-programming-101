@@ -72,6 +72,8 @@
         "float.h": "c",
         "stdio.h": "c",
         "nanosvg.h": "c",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "bitset": "cpp",
+        "shared_mutex": "cpp"
     }
 }

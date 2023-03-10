@@ -1,0 +1,2 @@
+a.exe: main.cpp product.cpp product.hpp shopping_cart.hpp shopping_cart.cpp array.hpp array.cpp makefile
+	g++ product.cpp main.cpp shopping_cart.cpp array.cpp -Wall -Wextra --pedantic-errors -std=c++17 -g
