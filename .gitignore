@@ -6,7 +6,9 @@
 !makefile
 
 
-pusheen_contest/build/*
+sem_1/pusheen_contest/build/*
+sem_1/pusheen_contest/nanosvg
+
 
 *.out
 *.exe
