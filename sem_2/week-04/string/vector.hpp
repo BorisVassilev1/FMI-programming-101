@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <ostream>
 #include <iostream>
+#include <cstring>
 
 template <class T>
 class vector {
@@ -14,6 +15,7 @@ class vector {
    public:
 	vector();
 	vector(const vector<T> &other);
+	~vector();
 	vector &operator=(const vector<T> &other);
 
 	bool		empty() const;
@@ -57,6 +59,11 @@ vector<T>::vector() : arr(new T[1]{0}), count(0), capacity(1) {}
 template <class T>
 vector<T>::vector(const vector<T> &other) : arr(new T[other.capacity]), count(other.count), capacity(other.capacity) {
 	memcpy(this->arr, other.arr, other.count * sizeof(T));
+}
+
+template <class T>
+vector<T>::~vector() {
+	delete this->arr;
 }
 
 template <class T>
@@ -138,3 +145,4 @@ void vector<T>::push(const T &elem) {
 	this->arr[this->count] = elem;
 	++this->count;
 }
+
