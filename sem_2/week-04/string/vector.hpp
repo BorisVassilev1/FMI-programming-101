@@ -35,7 +35,7 @@ template <class T>
 void vector<T>::resize(size_t newSize) {
 	T *newArr = new T[newSize];
 	memcpy(newArr, this->arr, this->count * sizeof(T));
-	delete this->arr;
+	delete [] this->arr;
 	this->arr	   = newArr;
 	this->capacity = newSize;
 }
@@ -63,7 +63,7 @@ vector<T>::vector(const vector<T> &other) : arr(new T[other.capacity]), count(ot
 
 template <class T>
 vector<T>::~vector() {
-	delete this->arr;
+	delete [] this->arr;
 }
 
 template <class T>
