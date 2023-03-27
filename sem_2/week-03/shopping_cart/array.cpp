@@ -9,15 +9,20 @@ Array<T>::Array(Array<T>& other) {
 }
 
 template <class T>
-Array<T>::Array() : arr(new T[1]), size(0), capacity(1) {}
-
-template <class T>
-Array<T>& Array<T>::operator=(Array<T>& other) {
+void Array<T>::copy(Array<T>& other) {
 	delete arr;
 	arr = new T[other.capacity];
 	memcpy(arr, other.arr, other.size * sizeof(T));
 	capacity = other.capacity;
 	size = other.size;
+}
+
+template <class T>
+Array<T>::Array() : arr(new T[1]), size(0), capacity(1) {}
+
+template <class T>
+Array<T>& Array<T>::operator=(Array<T>& other) {
+	copy(other);
 	return *this;
 }
 
@@ -39,8 +44,13 @@ void Array<T>::push(T& elem) {
 
 template <class T>
 void Array<T>::erase(size_t ind) {
-	for(int i = ind; i < size - 1) {
+	for(int i = ind; i < size - 1; ++ i) {
 		arr[i] = arr[i + 1];
 	}
+	-- size;
+}
+
+template <class T>
+void Array<T>::pop() {
 	-- size;
 }

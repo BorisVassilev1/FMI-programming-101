@@ -9,6 +9,7 @@ class Array {
 	size_t capacity;
 	T	  *arr;
 
+	void copy(Array<T> &other);
    public:
 	Array();
 	Array(Array<T> &other);
@@ -17,8 +18,9 @@ class Array {
 	void resize(size_t cap);
 	void push(T &elem);
 	void erase(size_t ind);
+	void pop();
 
-	T &operator[](size_t ind);
+	T &operator[](size_t ind) const;
 
 	template<class E>
 	friend std::ostream &operator<<(std::ostream &out, const Array<E> &arr);

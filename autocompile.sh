@@ -1,5 +1,4 @@
 #!/bin/bash
-FILE_NAME=week_5/merge_sort.cpp
 
 SHELL=/bin/bash
 
