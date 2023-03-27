@@ -15,29 +15,32 @@ class basic_string {
    public:
 	basic_string();
 	basic_string(const basic_string<T> &other);
-	basic_string(const T* str);
+	basic_string(const T *str);
 	~basic_string();
 	basic_string &operator=(const basic_string<T> &other);
 
-	bool		empty() const;
-	std::size_t size() const;
-	void		copy(basic_string<T> &dest, size_t count) const;
-	basic_string<T>	substr(size_t begin, size_t count) const;
+	bool			empty() const;
+	std::size_t		size() const;
+	void			copy(basic_string<T> &dest, size_t count) const;
+	basic_string<T> substr(size_t begin, size_t count) const;
 
-	T		  &operator[](size_t i) const;
+	T				&operator[](size_t i) const;
 	basic_string<T> &operator+=(const basic_string<T> &other);
-	basic_string<T>  operator+(const basic_string<T> &other) const;
-	int		   operator<=>(const basic_string<T> &other) const;
-			   operator T *();
+	basic_string<T>	 operator+(const basic_string<T> &other) const;
+	int				 operator<=>(const basic_string<T> &other) const;
+					 operator T *();
+	bool			 operator==(const basic_string<T> &other) const;
 
 	void push(const T &elem);
+	void pop();
+	void clear();
 };
 
 template <class T>
 void basic_string<T>::resize(size_t newSize) {
 	T *newArr = new T[newSize];
 	memcpy(newArr, this->arr, (this->count + 1) * sizeof(T));
-	delete [] this->arr;
+	delete[] this->arr;
 	this->arr	   = newArr;
 	this->capacity = newSize;
 }
@@ -59,22 +62,23 @@ template <class T>
 basic_string<T>::basic_string() : arr(new T[1]{0}), count(0), capacity(1) {}
 
 template <class T>
-basic_string<T>::basic_string(const basic_string<T> &other) : arr(new T[other.capacity]), count(other.count), capacity(other.capacity) {
+basic_string<T>::basic_string(const basic_string<T> &other)
+	: arr(new T[other.capacity]), count(other.count), capacity(other.capacity) {
 	memcpy(this->arr, other.arr, (other.count + 1) * sizeof(T));
 }
 
-template<class T>
-basic_string<T>::basic_string(const T* str) : arr(nullptr), count(0), capacity(0) {
+template <class T>
+basic_string<T>::basic_string(const T *str) : arr(nullptr), count(0), capacity(0) {
 	std::size_t size = strlen(str);
-	this->arr = new T[size + 1];
-	this->count = size;
-	this->capacity = size + 1;
+	this->arr		 = new T[size + 1];
+	this->count		 = size;
+	this->capacity	 = size + 1;
 	memcpy(this->arr, str, (size + 1) * sizeof(T));
 }
 
 template <class T>
 basic_string<T>::~basic_string() {
-	delete [] this->arr;
+	delete[] this->arr;
 }
 
 template <class T>
@@ -101,7 +105,7 @@ std::size_t basic_string<T>::size() const {
 template <class T>
 void basic_string<T>::copy(basic_string<T> &dest, size_t count) const {
 	if (count > this->count) count = this->count;
-	size_t free_space = dest.capacity - dest.count;
+	size_t free_space = dest.capacity - dest.count - 1;
 	if (free_space < count) { dest.resize(dest.count + count + 1); }
 	memcpy(dest.arr + dest.count, this->arr, (count + 1) * sizeof(T));
 	dest.count += count;
@@ -143,20 +147,33 @@ inline basic_string<T>::operator T *() {
 
 template <class T>
 int basic_string<T>::operator<=>(const basic_string<T> &other) const {
-	for(std::size_t i = 0; i < other.size() && i < this->size(); ++ i) {
-		if((*this)[i] != other[i]) {
-			return (*this)[i] - other[i];
-		}
+	for (std::size_t i = 0; i < other.size() && i < this->size(); ++i) {
+		if ((*this)[i] != other[i]) { return (*this)[i] - other[i]; }
 	}
 	return 0;
 }
 
 template <class T>
+bool basic_string<T>::operator==(const basic_string<T> &other) const {
+	return (*this <=> other) == 0;
+}
+
+template <class T>
 void basic_string<T>::push(const T &elem) {
 	if (this->count + 1 == this->capacity) this->resize();
-	this->arr[this->count] = elem;
-	this->arr[this->count] = 0;
+	this->arr[this->count]	   = elem;
+	this->arr[this->count + 1] = 0;
 	++this->count;
+}
+
+template <class T>
+void basic_string<T>::pop() {
+	--(this->count);
+}
+
+template <class T>
+void basic_string<T>::clear() {
+	this->count = 0;
 }
 
 using string = basic_string<char>;

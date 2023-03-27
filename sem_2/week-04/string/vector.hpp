@@ -28,6 +28,7 @@ class vector {
 	vector<T>  operator+(const vector<T> &other) const;
 	int		   operator<=>(const vector<T> &other) const;
 			   operator T *();
+	bool	   operator==(const vector<T> &other) const;
 
 	void push(const T &elem);
 };
@@ -35,7 +36,7 @@ template <class T>
 void vector<T>::resize(size_t newSize) {
 	T *newArr = new T[newSize];
 	memcpy(newArr, this->arr, this->count * sizeof(T));
-	delete [] this->arr;
+	delete[] this->arr;
 	this->arr	   = newArr;
 	this->capacity = newSize;
 }
@@ -63,7 +64,7 @@ vector<T>::vector(const vector<T> &other) : arr(new T[other.capacity]), count(ot
 
 template <class T>
 vector<T>::~vector() {
-	delete [] this->arr;
+	delete[] this->arr;
 }
 
 template <class T>
@@ -131,12 +132,15 @@ inline vector<T>::operator T *() {
 
 template <class T>
 int vector<T>::operator<=>(const vector<T> &other) const {
-	for(std::size_t i = 0; i < other.size() && i < this->size(); ++ i) {
-		if((*this)[i] != other[i]) {
-			return (*this)[i] - other[i];
-		}
+	for (std::size_t i = 0; i < other.size() && i < this->size(); ++i) {
+		if ((*this)[i] != other[i]) { return (*this)[i] - other[i]; }
 	}
 	return 0;
+}
+
+template <class T>
+bool vector<T>::operator==(const vector<T> &other) const {
+	return (*this <=> other) == 0;
 }
 
 template <class T>
@@ -145,4 +149,3 @@ void vector<T>::push(const T &elem) {
 	this->arr[this->count] = elem;
 	++this->count;
 }
-
