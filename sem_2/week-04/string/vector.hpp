@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstddef>
 #include <ostream>
 #include <iostream>
@@ -31,7 +33,9 @@ class vector {
 	bool	   operator==(const vector<T> &other) const;
 
 	void push(const T &elem);
+	void insert(const T &elem, unsigned i);
 };
+
 template <class T>
 void vector<T>::resize(size_t newSize) {
 	T *newArr = new T[newSize];
@@ -69,8 +73,8 @@ vector<T>::~vector() {
 
 template <class T>
 vector<T> &vector<T>::operator=(const vector<T> &other) {
-	if (this != *other) return *this;
-	delete this->arr;
+	if (this == &other) return *this;
+	delete[] this->arr;
 	this->arr	   = new T[other.capacity];
 	this->count	   = other.count;
 	this->capacity = other.capacity;
@@ -148,4 +152,14 @@ void vector<T>::push(const T &elem) {
 	if (this->count == this->capacity) this->resize();
 	this->arr[this->count] = elem;
 	++this->count;
+}
+
+template <class T>
+void vector<T>::insert(const T &elem, unsigned i) {
+	if (this->count == this->capacity) this->resize();
+
+	if (this->count != 0) memmove(arr + i + 1, arr + i, (this->count - i) * sizeof(T));
+
+	this->arr[i] = elem;
+	++(this->count);
 }
