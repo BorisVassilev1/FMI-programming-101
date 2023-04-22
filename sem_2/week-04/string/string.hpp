@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstddef>
 #include <ostream>
 #include <iostream>
@@ -83,8 +85,8 @@ basic_string<T>::~basic_string() {
 
 template <class T>
 basic_string<T> &basic_string<T>::operator=(const basic_string<T> &other) {
-	if (this != *other) return *this;
-	delete this->arr;
+	if (this == &other) return *this;
+	delete [] this->arr;
 	this->arr	   = new T[other.capacity];
 	this->count	   = other.count;
 	this->capacity = other.capacity;

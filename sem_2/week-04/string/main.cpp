@@ -1,6 +1,7 @@
 #include <iostream>
 #include "vector.hpp"
 #include "string.hpp"
+#include "set.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
@@ -13,6 +14,15 @@ TEST_CASE("VECTORS test") {
 		CHECK(v[0] == 1);
 		CHECK(v[1] == 2);
 		CHECK(v[2] == 3);
+	}
+	SUBCASE("vector assignment") {
+		vector<int> a;
+		a.push(1);
+		a.push(2);
+		a.push(3);
+		vector<int> b;
+		b = a;
+		CHECK(a == b);
 	}
 	SUBCASE("vector sum") {
 		vector<int> a, b;
@@ -38,6 +48,20 @@ TEST_CASE("VECTORS test") {
 		b.push(3);
 		CHECK(a.substr(1, 2) == b);
 	}
+	SUBCASE("vector insert") {
+		vector<int> a;
+		a.push(1);
+		a.push(2);
+		a.push(3);
+		a.push(5);
+		a.insert(4, 3);
+		std::cout << a << std::endl;
+		CHECK(a[0] == 1);
+		CHECK(a[1] == 2);
+		CHECK(a[2] == 3);
+		CHECK(a[3] == 4);
+		CHECK(a[4] == 5);
+	}
 }
 
 TEST_CASE("STRINGS test") {
@@ -49,6 +73,10 @@ TEST_CASE("STRINGS test") {
 		CHECK(a[3] == 'l');
 		CHECK(a[4] == 'o');
 		CHECK(a[5] == '\0');
+	}
+	SUBCASE("string assignment") {
+		b = a;
+		CHECK(a == b);
 	}
 	SUBCASE("string push") {
 		a.push('a');
@@ -84,5 +112,20 @@ TEST_CASE("STRINGS test") {
 	SUBCASE("empty strings") {
 		a.clear();
 		CHECK(a == string(""));
+	}
+}
+
+TEST_CASE("SET") {
+	SUBCASE("set init") {
+		set<int> s;
+		s.insert(3);
+		s.insert(2);
+		s.insert(1);
+
+		std::stringstream stream;
+		stream << s;
+		std::string result;
+		stream >> result;
+		CHECK(result == "123");
 	}
 }
