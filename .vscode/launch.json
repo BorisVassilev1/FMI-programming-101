@@ -48,7 +48,7 @@
                 "name": "F5 Anything: Custom Command",
                 "type": "f5anything",
                 "request": "launch",
-                "command": "g++ ${file} -std=c++2a -g -Wall -Wextra --pedantic-errors && a.exe"
+                "command": "g++ ${file} -std=c++2a -g -Wall -Wextra --pedantic-errors -fsanitize=address && a.exe"
             }
         }
     ]

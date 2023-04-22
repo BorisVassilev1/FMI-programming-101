@@ -1,2 +1,2 @@
 a.exe: main.cpp vector.hpp string.hpp makefile
-	g++ main.cpp -std=c++2a -Wall -Wextra -g -fsanitize=address
+	clang++ main.cpp -std=c++2a -Wall -Wextra -g -fsanitize=address
